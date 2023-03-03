@@ -2,7 +2,6 @@ import express from "express";
 import fileUpload from "express-fileupload";
 import morgan from "morgan";
 import CorsAccess from "utils/middlewares/cors";
-import { PORT } from "utils/constants";
 import { userRouter, enterpriseRouter, productRouter } from "structure";
 import "config/database";
 
@@ -21,7 +20,7 @@ app.use(morgan("dev"));
 app.use(CorsAccess);
 
 //Settings
-app.set("port", PORT || 8000);
+app.set("port", process.env.PORT || 8000);
 
 //Routes
 app.use(userRouter);
