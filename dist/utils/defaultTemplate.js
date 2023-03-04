@@ -59,33 +59,12 @@ const DefaultTemplate = PORT => `<!DOCTYPE html>
         text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
       }
 
-      .btn {
-        display: inline-block;
-        padding: 1rem 2rem;
-        font-size: 1.2rem;
-        text-align: center;
-        text-transform: uppercase;
-        letter-spacing: 2px;
-        color: #fff;
-        background-color: #333;
-        border: none;
-        border-radius: 50px;
-        margin-top: 2rem;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-        text-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
-      }
-
-      .btn:hover {
-        background-color: #555;
-      }
     </style>
   </head>
   <body>
     <div class="container">
       <h1>Welcome to server response</h1>
       <p>Your server is up and running in port: ${PORT}</p>
-      <button class="btn">Go to dashboard</button>
     </div>
   </body>
 </html>

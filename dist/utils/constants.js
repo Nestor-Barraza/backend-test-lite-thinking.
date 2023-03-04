@@ -8,7 +8,6 @@ _dotenv.default.config();
 module.exports = {
   CLUSTER_URL: process.env.CLUSTER_URL,
   //JWT PROPS
-  JWT_KEY: process.env.JWT_KEY,
   JWT_SIGNATURE: process.env.JWT_SIGNATURE,
   //Email Validation
   REGEX_EMAIL: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
