@@ -7,7 +7,6 @@ _dotenv.default.config();
 //Constants
 module.exports = {
   CLUSTER_URL: process.env.CLUSTER_URL,
-  PORT: process.env.PORT,
   //JWT PROPS
   JWT_KEY: process.env.JWT_KEY,
   JWT_SIGNATURE: process.env.JWT_SIGNATURE,

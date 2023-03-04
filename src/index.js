@@ -1,3 +1,4 @@
+import DefaultTemplate from "utils/defaultTemplate";
 import app from "./server";
 import "colors";
 
@@ -9,7 +10,7 @@ app.listen(PORT, () => {
   try {
     console.log("Listen on port:".blue, `${PORT}`.rainbow.underline);
     app.use("/", (req, res) => {
-      res.send(`Running server on port: ${PORT}`);
+      res.send(DefaultTemplate(PORT));
     });
   } catch (error) {
     console.log(error);

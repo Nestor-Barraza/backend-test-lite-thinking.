@@ -5,7 +5,6 @@ var _express = _interopRequireDefault(require("express"));
 var _expressFileupload = _interopRequireDefault(require("express-fileupload"));
 var _morgan = _interopRequireDefault(require("morgan"));
 var _cors = _interopRequireDefault(require("./utils/middlewares/cors"));
-var _constants = require("./utils/constants");
 var _structure = require("./structure");
 require("./config/database");
 //General config
@@ -29,7 +28,7 @@ app.use((0, _morgan.default)("dev"));
 app.use(_cors.default);
 
 //Settings
-app.set("port", _constants.PORT || 8000);
+app.set("port", process.env.PORT || 8000);
 
 //Routes
 app.use(_structure.userRouter);
