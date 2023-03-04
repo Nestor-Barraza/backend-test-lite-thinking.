@@ -4,7 +4,7 @@ var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefau
 var _Domain = _interopRequireDefault(require("../../Domain"));
 var _pdfkit = _interopRequireDefault(require("pdfkit"));
 var _awsConfig = _interopRequireDefault(require("../../../../config/awsConfig"));
-var _memoryStream = _interopRequireDefault(require("memory-stream"));
+var _fs = _interopRequireDefault(require("fs"));
 var _constants = require("../../../../utils/constants");
 //PDF props
 const {
@@ -28,10 +28,11 @@ module.exports = async ({
   if (products) {
     try {
       // Create PDFDocument Object
+      const pdfPath = "archivo.pdf";
       const doc = new _pdfkit.default();
 
       // Set page width and margin
-      const pdfStream = doc.pipe(new _memoryStream.default());
+      doc.pipe(_fs.default.createWriteStream("archivo.pdf"));
       doc.fontSize(12);
       doc.page.width = 612;
       doc.page.margins = {
@@ -85,7 +86,7 @@ module.exports = async ({
         text: "Este correo contiene un resumen de los productos requeridos.",
         attachments: [{
           filename: "product_list.pdf",
-          path: pdfStream
+          path: pdfPath
         }]
       };
 
