@@ -11,6 +11,4 @@ const SendEmailClient = nodemailer.createTransport(sesTransport({
   region: REGION,
 }));
 
-
-
 export default SendEmailClient;
