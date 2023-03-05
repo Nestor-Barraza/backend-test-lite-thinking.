@@ -8,6 +8,10 @@ module.exports = {
   JWT_SIGNATURE: process.env.JWT_SIGNATURE,
   //Email Validation
   REGEX_EMAIL: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+  //Password Validation
+  PASSWORD_REGEX:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{8,}$/,
+  //Phone Validation
+  PHONE_REGEX: /^(\+)?[1-9]\d{8,13}$/,
   //AWS Credentials
   ACCESS_KEY_ID: process.env.ACCESS_KEY_ID,
   SECRET_ACCESS_KEY: process.env.SECRET_ACCESS_KEY,

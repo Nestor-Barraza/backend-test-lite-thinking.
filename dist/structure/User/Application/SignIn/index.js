@@ -24,42 +24,46 @@ module.exports = async ({
     });
 
     //Match password
-    await _bcryptjs.default.compareSync(password, user.password);
-    //User props
-    const {
-      _id,
-      full_name,
-      NIT,
-      role,
-      phone
-    } = user;
+    const matchPassword = await _bcryptjs.default.compareSync(password, user.password);
+    if (matchPassword) {
+      //User props
+      const {
+        _id,
+        full_name,
+        NIT,
+        role,
+        phone
+      } = user;
 
-    //Access token
-    const access_token = _jsonwebtoken.default.sign({
-      _id,
-      full_name,
-      NIT,
-      role,
-      email,
-      phone
-    }, _constants.JWT_SIGNATURE, {
-      expiresIn: "15m"
-    });
-    //Refresh token
-    const refresh_token = _jsonwebtoken.default.sign({
-      _id,
-      full_name,
-      NIT,
-      role,
-      email,
-      phone
-    }, _constants.JWT_SIGNATURE, {
-      expiresIn: "1d"
-    });
-    res.status(200).send({
-      access_token,
-      refresh_token
-    });
+      //Access token
+      const access_token = _jsonwebtoken.default.sign({
+        _id,
+        full_name,
+        NIT,
+        role,
+        email,
+        phone
+      }, _constants.JWT_SIGNATURE, {
+        expiresIn: "30m"
+      });
+      //Refresh token
+      const refresh_token = _jsonwebtoken.default.sign({
+        _id,
+        full_name,
+        NIT,
+        role,
+        email,
+        phone
+      }, _constants.JWT_SIGNATURE, {
+        expiresIn: "1d"
+      });
+      res.status(200).send({
+        access_token,
+        refresh_token
+      });
+    } else {
+      res.status(401).send(_errors.NOT_MATCH_CREDENTIALS);
+    }
   } catch ({
     name,
     message

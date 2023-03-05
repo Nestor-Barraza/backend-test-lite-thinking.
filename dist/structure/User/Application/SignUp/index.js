@@ -1,7 +1,6 @@
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-var _jsonwebtoken = _interopRequireDefault(require("jsonwebtoken"));
 var _index = _interopRequireDefault(require("../../Domain/index"));
 var _constants = require("../../../../utils/constants");
 var _errors = require("../../../../utils/errors");
@@ -17,18 +16,21 @@ module.exports = async ({
   }
 }, res) => {
   switch (true) {
-    case password.length < 4:
+    case !_constants.PASSWORD_REGEX.test(password):
       {
-        console.log(_errors.SHORT_PASSWORD);
-        res.status(400).json(_errors.SHORT_PASSWORD);
+        console.log(_errors.INVALID_PASSWORD);
+        return res.status(400).json(_errors.INVALID_PASSWORD);
       }
-      break;
     case !_constants.REGEX_EMAIL.test(email):
       {
         console.log(_errors.NOT_VALID_EMAIL);
-        res.status(400).json(_errors.NOT_VALID_EMAIL);
+        return res.status(400).json(_errors.NOT_VALID_EMAIL);
       }
-      break;
+    case !_constants.PHONE_REGEX.test(phone):
+      {
+        console.log(_errors.INVALID_PHONE);
+        return res.status(400).json(_errors.INVALID_PHONE);
+      }
     default:
       {
         try {
@@ -40,9 +42,11 @@ module.exports = async ({
             phone,
             password
           });
-          await newUser.save();
-          console.log("Successfully registered user".green);
-          res.status(200).json(newUser);
+          const createUser = await newUser.save();
+          if (createUser) {
+            console.log("Successfully registered user".green);
+            res.status(200).json(newUser);
+          }
         } catch ({
           name,
           message
