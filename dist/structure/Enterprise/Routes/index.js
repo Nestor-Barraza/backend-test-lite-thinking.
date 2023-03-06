@@ -12,7 +12,7 @@ router.get("/enterprise/:NIT", _auth.isAuthenticated, _Application.findEnterpris
 //New enterprise
 router.post("/enterprise/create", _auth.isAuthenticated, _Application.createNewEnterprise);
 //Edit enterprise
-router.put("/enterprise/:NIT", _auth.isAuthenticated, _Application.updateEnterprise);
+router.put("/enterprise/update", _auth.isAuthenticated, _Application.updateEnterprise);
 //Delete enterprise
-router.delete("/enterprise/:NIT", _auth.isAuthenticated, _Application.deleteEnterprise);
+router.delete("/enterprise/delete/:NIT", _auth.isAuthenticated, _Application.deleteEnterprise);
 module.exports = router;

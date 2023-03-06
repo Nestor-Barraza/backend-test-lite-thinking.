@@ -10,7 +10,7 @@ router.post("/product/", _auth.isAuthenticated, _Application.createNewproduct);
 //Get product user
 router.get("/product/:id", _auth.isAuthenticated, _Application.getProduct);
 //Edit Product user
-router.put("/product/:id", _auth.isAuthenticated, _Application.updateProduct);
+router.put("/product/update", _auth.isAuthenticated, _Application.updateProduct);
 //Delete Product user
 router.delete("/product/:id", _auth.isAuthenticated, _Application.deleteProduct);
 

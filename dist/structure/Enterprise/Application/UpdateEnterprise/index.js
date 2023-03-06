@@ -8,43 +8,53 @@ module.exports = async ({
   body: {
     name,
     address,
-    phone
-  },
-  params: {
-    id
+    phone,
+    NIT
   },
   user: {
-    _id,
     role
   }
 }, res) => {
-  try {
-    //Roles permission
-    if (role !== "admin") return res.status(401).send(_errors.ACCESS_DENIED);
-   
-    //Update
-    const newEnterprise = await _index.default.findByIdAndUpdate(id, {
+  //Roles permission
+  if (role !== "admin") return res.status(401).send(_errors.ACCESS_DENIED);
+  if (!name || !name || !phone || !address) {
+    return res.status(400).json({
+      message: "You can not update leaving fields empty",
+      code: "EMPTY_FIELDS"
+    });
+  } else {
+    try {
+      //Update
+      const getEnterprise = await _index.default.find({
+        NIT
+      });
+      if (getEnterprise) {
+        const updateEnterprise = await _index.default.updateOne({
+          NIT
+        }, {
+          name,
+          address,
+          phone
+        });
+        if (updateEnterprise) {
+          return res.json({
+            message: "company successfully updated",
+            code: "UPDATE_SUCCESSFULL"
+          });
+        }
+      }
+    } catch ({
       name,
-      address,
-      phone
-    }, {
-      new: true
-    });
-    if(newEnterprise){
-      return res.json(newEnterprise);
+      message
+    }) {
+      console.log({
+        message,
+        code: name
+      });
+      res.json({
+        message,
+        code: name
+      });
     }
-  
-  } catch ({
-    name,
-    message
-  }) {
-    console.log({
-      message,
-      code: name
-    });
-    res.json({
-      message,
-      code: name
-    });
   }
 };

@@ -15,8 +15,15 @@ module.exports = async ({
   //Roles permission
   if (role !== "admin") return res.status(401).send(_errors.ACCESS_DENIED);
   try {
-    const deleteProduct = await _index.default.findByIdAndDelete(id);
-    res.json(deleteProduct);
+    const deleteProduct = await _index.default.deleteOne({
+      _id: id
+    });
+    if (deleteProduct) {
+      res.json({
+        message: "product successfully removed",
+        code: "DELETE_PRODUCT"
+      });
+    }
   } catch ({
     name,
     message
