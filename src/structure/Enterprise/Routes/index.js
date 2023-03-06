@@ -19,6 +19,6 @@ router.post("/enterprise/create", isAuthenticated, createNewEnterprise);
 //Edit enterprise
 router.put("/enterprise/update", isAuthenticated, updateEnterprise);
 //Delete enterprise
-router.delete("/enterprise/:NIT", isAuthenticated, deleteEnterprise);
+router.delete("/enterprise/delete/:NIT", isAuthenticated, deleteEnterprise);
 
 module.exports = router;

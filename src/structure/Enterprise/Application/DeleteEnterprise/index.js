@@ -5,17 +5,16 @@ import { ACCESS_DENIED } from "utils/errors";
 module.exports = async ({ params: { NIT }, user: { role } }, res) => {
   //Roles permission
   if (role !== "admin") return res.status(401).send(ACCESS_DENIED);
-
-  if(!NIT){
+  if (!NIT) {
     return res.status(400).json({
       message: "You can not update leaving fields empty",
       code: "EMPTY_FIELDS",
     });
-  }else{
-    const getEnterprise = await Enterprise.find({ NIT });
-  if (getEnterprise) {
+  } else {
     try {
-      const deleteEnterprise = await Enterprise.findByIdAndDelete(id);
+      const deleteEnterprise = await Enterprise.deleteOne({
+        NIT,
+      });
       if (deleteEnterprise) {
         return res.json({
           message: "Enterprise successfully removed",
@@ -32,6 +31,5 @@ module.exports = async ({ params: { NIT }, user: { role } }, res) => {
         code: name,
       });
     }
-  }
   }
 };
