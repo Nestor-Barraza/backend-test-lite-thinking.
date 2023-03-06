@@ -17,7 +17,7 @@ router.get("/enterprise/:NIT", isAuthenticated, findEnterprise);
 //New enterprise
 router.post("/enterprise/create", isAuthenticated, createNewEnterprise);
 //Edit enterprise
-router.put("/enterprise/:NIT", isAuthenticated, updateEnterprise);
+router.put("/enterprise/update", isAuthenticated, updateEnterprise);
 //Delete enterprise
 router.delete("/enterprise/:NIT", isAuthenticated, deleteEnterprise);
 

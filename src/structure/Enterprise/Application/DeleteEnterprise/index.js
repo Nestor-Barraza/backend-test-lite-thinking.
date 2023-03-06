@@ -2,20 +2,36 @@ import Enterprise from "../../Domain/index";
 import { ACCESS_DENIED } from "utils/errors";
 
 //Delete Enterprise
-module.exports = async ({ params: { id }, user: { role } }, res) => {
+module.exports = async ({ params: { NIT }, user: { role } }, res) => {
   //Roles permission
   if (role !== "admin") return res.status(401).send(ACCESS_DENIED);
-  try {
-    const deleteEnterprise = await Enterprise.findByIdAndDelete(id);
-    return res.json(deleteEnterprise);
-  } catch ({ name, message }) {
-    console.log({
-      message: message,
-      code: name,
+
+  if(!NIT){
+    return res.status(400).json({
+      message: "You can not update leaving fields empty",
+      code: "EMPTY_FIELDS",
     });
-    res.json({
-      message: message,
-      code: name,
-    });
+  }else{
+    const getEnterprise = await Enterprise.find({ NIT });
+  if (getEnterprise) {
+    try {
+      const deleteEnterprise = await Enterprise.findByIdAndDelete(id);
+      if (deleteEnterprise) {
+        return res.json({
+          message: "Enterprise successfully removed",
+          code: "DELETE_ENTERPRISE",
+        });
+      }
+    } catch ({ name, message }) {
+      console.log({
+        message,
+        code: name,
+      });
+      res.json({
+        message,
+        code: name,
+      });
+    }
+  }
   }
 };

@@ -7,11 +7,11 @@ module.exports = async ({ params: { id } }, res) => {
     res.json(product);
   } catch ({ name, message }) {
     console.log({
-      message: message,
+      message,
       code: name,
     });
     res.json({
-      message: message,
+      message,
       code: name,
     });
   }

@@ -3,33 +3,46 @@ import { ACCESS_DENIED } from "utils/errors";
 
 //Update Enterprise
 module.exports = async (
-  { body: { name, address, phone }, params: { id }, user: { _id, role } },
+  { body: { name, address, phone, NIT }, user: { role } },
   res
 ) => {
-  try {
-    //Roles permission
-    if (role !== "admin") return res.status(401).send(ACCESS_DENIED);
-    //Validation
-    await validateEnterpriseUser(id, _id);
-    //Update
-    const newEnterprise = await Enterprise.findByIdAndUpdate(
-      id,
-      {
-        name,
-        address,
-        phone,
-      },
-      { new: true }
-    );
-    return res.json(newEnterprise);
-  } catch ({ name, message }) {
-    console.log({
-      message: message,
-      code: name,
+  //Roles permission
+  if (role !== "admin") return res.status(401).send(ACCESS_DENIED);
+
+  if (!name || !name || !phone || !address) {
+    return res.status(400).json({
+      message: "You can not update leaving fields empty",
+      code: "EMPTY_FIELDS",
     });
-    res.json({
-      message: message,
-      code: name,
-    });
+  } else {
+    try {
+      //Update
+      const getEnterprise = await Enterprise.find({ NIT });
+      if (getEnterprise) {
+        const updateEnterprise = await Enterprise.updateOne(
+          { NIT },
+          {
+            name,
+            address,
+            phone,
+          }
+        );
+        if (updateEnterprise) {
+          return res.json({
+            message: "company successfully updated",
+            code: "UPDATE_SUCCESSFULL",
+          });
+        }
+      }
+    } catch ({ name, message }) {
+      console.log({
+        message,
+        code: name,
+      });
+      res.json({
+        message,
+        code: name,
+      });
+    }
   }
 };

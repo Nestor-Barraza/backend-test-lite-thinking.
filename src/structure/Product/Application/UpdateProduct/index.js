@@ -1,33 +1,42 @@
-const { isValidObjectId } = require("mongoose")
-const Product = require('../../Domain/index');
-import Category from 'structure/Enterprise/Domain'
-
-const validateProductUser = async (productId, idUserSession) => {
-  const product = await Product.findById(productId);
-  if (product) {
-      const category = await Category.findById(product.categoryId);
-      if (category.userId.equals(idUserSession)) return product;
-
-      return false;
-  }
-  return null;
-};
-
+import Product from "../../Domain/index";
 
 //Edit product
-module.exports = async (req, res) => {
-  if (!isValidObjectId(req.params.id)) return res.status(400).send('El id no es valido.');
-  const product = await validateProductUser(req.params.id, req.user._id)
-  const {  price, address, neighborhood, stratum, parking, m2, rooms, bathRooms } = req.body;
-  if (product) {
+module.exports = async (
+  { body: { title, description, price, unitsAvailable, id } },
+  res
+) => {
+  if (!title || !description || !price || !unitsAvailable || !id) {
+    return res.status(400).json({
+      message: "You can not update leaving fields empty",
+      code: "EMPTY_FIELDS",
+    });
+  } else {
+    try {
       const newProduct = await Product.findByIdAndUpdate(
-          req.params.id,
-          { price, address, neighborhood, stratum, parking, m2, rooms, bathRooms  },
-          { new: true }
+        id,
+        {
+          title,
+          description,
+          price,
+          unitsAvailable,
+        },
+        { new: true }
       );
-      return res.json(newProduct);
+      if (newProduct) {
+        return res.json({
+          message: "Product successfully updated",
+          code: "UPDATE_SUCCESSFULL",
+        });
+      }
+    } catch ({ name, message }) {
+      console.log({
+        message,
+        code: name,
+      });
+      res.json({
+        message,
+        code: name,
+      });
+    }
   }
-  if (product === false) return res.status(403).send('No tienes permisos');
-  if (product === null) return res.send('No existe ese producto');
-
 };

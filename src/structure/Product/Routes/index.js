@@ -16,7 +16,7 @@ router.post("/product/", isAuthenticated, createNewproduct);
 //Get product user
 router.get("/product/:id", isAuthenticated, getProduct);
 //Edit Product user
-router.put("/product/:id", isAuthenticated, updateProduct);
+router.put("/product/update", isAuthenticated, updateProduct);
 //Delete Product user
 router.delete("/product/:id", isAuthenticated, deleteProduct);
 

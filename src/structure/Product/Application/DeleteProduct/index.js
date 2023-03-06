@@ -8,14 +8,19 @@ module.exports = async ({ params: { id }, user: { role } }, res) => {
 
   try {
     const deleteProduct = await Product.findByIdAndDelete(id);
-    res.json(deleteProduct);
+    if (deleteProduct) {
+      res.json({
+        message: "product successfully removed",
+        code: "DELETE_PRODUCT",
+      });
+    }
   } catch ({ name, message }) {
     console.log({
-      message: message,
+      message,
       code: name,
     });
     res.json({
-      message: message,
+      message,
       code: name,
     });
   }

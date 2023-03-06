@@ -23,11 +23,11 @@ module.exports = async (
     res.json(newProduct);
   } catch ({ name, message }) {
     console.log({
-      message: message,
+      message,
       code: name,
     });
     res.json({
-      message: message,
+      message,
       code: name,
     });
   }

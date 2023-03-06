@@ -41,11 +41,11 @@ module.exports = async ({ body: { email, password } }, res) => {
     }
   } catch ({ name, message }) {
     console.log({
-      message: message,
+      message,
       code: name,
     });
     res.json({
-      message: message,
+      message,
       code: name,
     });
   }

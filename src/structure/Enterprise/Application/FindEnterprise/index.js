@@ -20,11 +20,11 @@ module.exports = async ({ params: { NIT }, user: { _id, role } }, res) => {
     res.status(200).json(enterprise);
   } catch ({ name, message }) {
     console.log({
-      message: message,
+      message,
       code: name,
     });
     res.json({
-      message: message,
+      message,
       code: name,
     });
   }

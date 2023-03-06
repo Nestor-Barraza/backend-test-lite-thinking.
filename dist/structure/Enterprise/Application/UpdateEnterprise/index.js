@@ -21,8 +21,7 @@ module.exports = async ({
   try {
     //Roles permission
     if (role !== "admin") return res.status(401).send(_errors.ACCESS_DENIED);
-    //Validation
-    await validateEnterpriseUser(id, _id);
+   
     //Update
     const newEnterprise = await _index.default.findByIdAndUpdate(id, {
       name,
@@ -31,17 +30,20 @@ module.exports = async ({
     }, {
       new: true
     });
-    return res.json(newEnterprise);
+    if(newEnterprise){
+      return res.json(newEnterprise);
+    }
+  
   } catch ({
     name,
     message
   }) {
     console.log({
-      message: message,
+      message,
       code: name
     });
     res.json({
-      message: message,
+      message,
       code: name
     });
   }
