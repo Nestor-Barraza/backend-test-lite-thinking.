@@ -2,7 +2,7 @@ import Product from "structure/Product/Domain";
 import PDFDocument from "pdfkit";
 import SendEmailClient from "config/awsConfig";
 import fs from "fs";
-import { PDF_PROPS, EMAIL_VERIFIED } from "utils/constants";
+import { PDF_PROPS, EMAIL_VERIFIED, ACCESS_DENIED } from "utils/constants";
 
 //PDF props
 const {
@@ -17,7 +17,11 @@ const {
   oddRowBackgroundColor,
 } = PDF_PROPS;
 
-module.exports = async ({ body: { email } }, res) => {
+module.exports = async ({ body: { email } , user: { role }}, res) => {
+
+  
+    //Roles permission
+    if (role !== "admin") return res.status(401).send(ACCESS_DENIED);
   //Find all products
   const products = await Product.find({});
   if (products) {

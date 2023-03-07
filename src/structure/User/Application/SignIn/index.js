@@ -15,27 +15,30 @@ module.exports = async ({ body: { email, password } }, res) => {
 
   try {
     const user = await User.findOne({ email });
+    if (user) {
+      //Match password
+      const matchPassword = await bcrypt.compareSync(password, user.password);
+      if (matchPassword) {
+        //User props
+        const { _id, full_name, NIT, role, phone } = user;
 
-    //Match password
-    const matchPassword = await bcrypt.compareSync(password, user.password);
-    if (matchPassword) {
-      //User props
-      const { _id, full_name, NIT, role, phone } = user;
+        //Access token
+        const access_token = jwt.sign(
+          { _id, full_name, NIT, role, email, phone },
+          JWT_SIGNATURE,
+          { expiresIn: "30m" }
+        );
+        //Refresh token
+        const refresh_token = jwt.sign(
+          { _id, full_name, NIT, role, email, phone },
+          JWT_SIGNATURE,
+          { expiresIn: "1d" }
+        );
 
-      //Access token
-      const access_token = jwt.sign(
-        { _id, full_name, NIT, role, email, phone },
-        JWT_SIGNATURE,
-        { expiresIn: "30m" }
-      );
-      //Refresh token
-      const refresh_token = jwt.sign(
-        { _id, full_name, NIT, role, email, phone },
-        JWT_SIGNATURE,
-        { expiresIn: "1d" }
-      );
-
-      res.status(200).send({ access_token, refresh_token });
+        res.status(200).send({ access_token, refresh_token });
+      } else {
+        res.status(401).send(NOT_MATCH_CREDENTIALS);
+      }
     } else {
       res.status(401).send(NOT_MATCH_CREDENTIALS);
     }

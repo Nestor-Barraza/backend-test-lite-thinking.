@@ -1,7 +1,7 @@
 import PDFDocument from "pdfkit";
 import Product from "structure/Product/Domain";
 import fs from "fs";
-import { PDF_PROPS } from "utils/constants";
+import { PDF_PROPS, ACCESS_DENIED } from "utils/constants";
 
 //PDF props
 const {
@@ -16,7 +16,10 @@ const {
   oddRowBackgroundColor,
 } = PDF_PROPS;
 
-module.exports = async ({ params: { name_file } }, res) => {
+module.exports = async ({ params: { name_file }, user: { role } }, res) => {
+
+    //Roles permission
+    if (role !== "admin") return res.status(401).send(ACCESS_DENIED);
   //Find all products
   const products = await Product.find({});
 
