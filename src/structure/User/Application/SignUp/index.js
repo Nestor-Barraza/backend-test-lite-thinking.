@@ -1,6 +1,11 @@
 import User from "../../Domain/index";
 import { REGEX_EMAIL, PASSWORD_REGEX, PHONE_REGEX } from "utils/constants";
-import { NOT_VALID_EMAIL, INVALID_PASSWORD, INVALID_PHONE } from "utils/errors";
+import {
+  NOT_VALID_EMAIL,
+  INVALID_PASSWORD,
+  INVALID_PHONE,
+  EMAIL_ALREADY_IS_REGISTERED,
+} from "utils/errors";
 
 //Controller
 module.exports = async (
@@ -24,29 +29,36 @@ module.exports = async (
 
     default:
       {
-        try {
-          const newUser = new User({
-            full_name,
-            NIT,
-            role,
-            email,
-            phone,
-            password,
-          });
-          const createUser = await newUser.save();
-          if (createUser) {
-            console.log("Successfully registered user".green);
-            res.status(200).json(newUser);
+        const findUserInDatabase = await User.find({ email });
+        if (findUserInDatabase) {
+          res.json(EMAIL_ALREADY_IS_REGISTERED);
+        } else {
+          try {
+            const newUser = new User({
+              full_name,
+              NIT,
+              role,
+              email,
+              phone,
+              password,
+            });
+            const createUser = await newUser.save();
+            if (createUser) {
+              res.status(200).json({
+                message: "Successfully registered user",
+                code: "ACCOUNT_REGISTERED",
+              });
+            }
+          } catch ({ name, message }) {
+            console.log({
+              message,
+              code: name,
+            });
+            res.json({
+              message,
+              code: name,
+            });
           }
-        } catch ({ name, message }) {
-          console.log({
-            message: message,
-            code: name,
-          });
-          res.json({
-            message: message,
-            code: name,
-          });
         }
       }
       break;
